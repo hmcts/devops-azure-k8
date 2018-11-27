@@ -14,10 +14,10 @@ variables:
   environment: 'hmctsdemo'
 
 jobs:
-- template: ../jobs/keyvault-ci.yml
+- template: ../jobs/vault-read.yml
   parameters:
     serviceConnection: azurerm-hmctsdemo
     
-- template: ../jobs/k8.yml
+- template: ../jobs/k8-deploy.yml
   parameters:
     serviceConnection: azurerm-hmctsdemo
