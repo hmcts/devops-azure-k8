@@ -2,7 +2,7 @@ variables:
   environment: 'hmctsdemo'
   aksResourceGroup: 'k8-$(environment)'
   subnetResourceGroup: 'core-infra-$(environment)'
-  subnetName: 'k8-subnet'
+  subnetName: 'aks-subnet'
   vnetName: 'core-infra-vnet-$(environment)'
   location: 'uksouth'
   clusterName: 'k8-cluster-$(environment)'
