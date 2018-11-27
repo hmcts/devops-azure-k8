@@ -1,0 +1,18 @@
+#
+# Base AKS install.
+#
+parameters:
+  serviceConnection: ''
+
+jobs:
+- job: AKS
+  dependsOn: Keyvault
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  variables:
+    aksServicePrincipalId: $[dependencies.Keyvault.outputs['translateKeyvault.aksServicePrincipalId']]
+    aksServicePrincipalSecret: $[dependencies.Keyvault.outputs['translateKeyvault.aksServicePrincipalSecret']]
+  steps:
+  - template: ../steps/k8-deploy.yml
+    parameters:
+      serviceConnection: ${{ parameters.serviceConnection }}
