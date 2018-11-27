@@ -1,23 +1,23 @@
 variables:
-  aksResourceGroup: 'cnp-aks-rg'
-  subnetResourceGroup: 'core-infra-hmctsdemo'
-  subnetName: 'aks-subnet'
-  vnetName: 'core-infra-vnet-hmctsdemo'
+  environment: 'hmctsdemo'
+  aksResourceGroup: 'k8-$(environment)'
+  subnetResourceGroup: 'core-infra-$(environment)'
+  subnetName: 'k8-subnet'
+  vnetName: 'core-infra-vnet-$(environment)'
   location: 'uksouth'
-  clusterName: 'cnp-aks-cluster'
+  clusterName: 'k8-cluster-$(environment)'
   nodeCount: '10'
   nodeDiskSize: '100'
   vmSize: 'Standard_D4s_v3'
   kubernetesVersion: '1.11.4'
-  keyvaultName: 'infra-vault-hmctsdemo'
+  keyvaultName: 'k8-vault-$(environment)'
   kubectlConnectionType: 'Azure Resource Manager'
-  environment: 'hmctsdemo'
 
 jobs:
 - template: ../jobs/vault-read.yml
   parameters:
-    serviceConnection: azurerm-hmctsdemo
+    serviceConnection: azurerm-$(environment)
     
 - template: ../jobs/k8-deploy.yml
   parameters:
-    serviceConnection: azurerm-hmctsdemo
+    serviceConnection: azurerm-$(environment)
