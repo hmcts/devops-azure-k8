@@ -13,6 +13,11 @@ variables:
   kubectlConnectionType: 'Azure Resource Manager'
   environment: 'hmctsdemo'
 
+jobs:
+- template: ../jobs/keyvault-ci.yml
+  parameters:
+    serviceConnection: azurerm-hmctsdemo
+    
 - template: ../jobs/k8.yml
   parameters:
     serviceConnection: azurerm-hmctsdemo
