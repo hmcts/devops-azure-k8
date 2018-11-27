@@ -12,3 +12,7 @@ variables:
   keyvaultName: 'infra-vault-hmctsdemo'
   kubectlConnectionType: 'Azure Resource Manager'
   environment: 'hmctsdemo'
+
+- template: ../jobs/k8.yml
+  parameters:
+    serviceConnection: azurerm-hmctsdemo
