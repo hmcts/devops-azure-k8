@@ -24,5 +24,5 @@ steps:
     azureResourceGroup: ${{ parameters.aksResourceGroup }}
     kubernetesCluster: ${{ parameters.aksClusterName }}
     command: 'get service'
-    arguments: '-l app=nginx-ingress --namespace kube-system'
+    arguments: '-w -l app=nginx-ingress --namespace kube-system'
     outputFormat: 'name'
