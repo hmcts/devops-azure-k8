@@ -6,7 +6,7 @@ variables:
   aksClusterName: 'k8-cluster-pipelinedev-hmctsdemo'
   keyvaultName: 'infra-vault-hmctsdemo'
   serviceConnection: 'azurerm-hmctsdemo'
-  aksParametersFile: 'hmctsdemo.json'
+  aksParametersFile: 'pipelinedev.json'
   ingressDNSName: 'pipelinedev.hmctsdemo.platform.hmcts.net'
 
 jobs:
