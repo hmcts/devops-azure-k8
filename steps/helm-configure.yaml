@@ -4,7 +4,7 @@ parameters:
   aksClusterName: ''
 
 steps:
-- template: ../steps/helm-installer.yaml
+- template: ../steps/helm-install.yaml
 
 - task: HelmDeploy@0
   displayName: 'Initialise Helm Client'
