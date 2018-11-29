@@ -18,4 +18,4 @@
       echo "##vso[task.setvariable variable=svcatServicePrincipalSecret;isOutput=true]$(jenkins-sp-secret)"
       echo "##vso[task.setvariable variable=svcatServicePrincipalTenantId;isOutput=true]$(jenkins-sp-tenant-id)"
     displayName: 'Export Keyvault Variables'
-    name: exportKeyvault
+    name: exportKeyVault
