@@ -34,6 +34,7 @@ jobs:
       aksResourceGroup: $(aksResourceGroup)
       aksClusterName: $(aksClusterName)
       aksParametersFile: $(aksParametersFile)
+      ingressDNSName: $(ingressDNSName)
 
 - job: InstallKured
   dependsOn: DeployK8
