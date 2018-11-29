@@ -26,7 +26,7 @@ jobs:
     aksServicePrincipalId: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalId']]
     aksServicePrincipalSecret: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalSecret']]
   steps:
-  - template: ../tasks/helm-installer.yaml
+  - template: ../steps/helm-install.yaml
   - template: ../steps/k8-deploy.yaml
     parameters:
       serviceConnection: $(serviceConnection)
