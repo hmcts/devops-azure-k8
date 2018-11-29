@@ -9,7 +9,7 @@ variables:
   aksParametersFile: 'hmctsdemo.json'
 
 jobs:
-- job: KeyVault
+- job: Read Secrets from KeyVault
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
@@ -18,7 +18,7 @@ jobs:
       serviceConnection: $(serviceConnection)
       keyvaultName: $(keyvaultName)
 
-- job: DeployK8
+- job: Deploy K8 Cluster
   dependsOn: KeyVault
   pool:
     vmImage: 'Ubuntu 16.04'
@@ -34,7 +34,7 @@ jobs:
       aksClusterName: $(aksClusterName)
       aksParametersFile: $(aksParametersFile)
 
-- job: InstallKured
+- job: Install Kured
   dependsOn: DeployK8
   condition: succeeded()
   pool:
