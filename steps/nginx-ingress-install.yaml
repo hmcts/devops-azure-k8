@@ -23,6 +23,6 @@ steps:
     azureSubscriptionEndpoint: ${{ parameters.serviceConnection }}
     azureResourceGroup: ${{ parameters.aksResourceGroup }}
     kubernetesCluster: ${{ parameters.aksClusterName }}
-    command: 'get service'
-    arguments: '-w -l app=nginx-ingress --namespace kube-system'
+    command: 'get'
+    arguments: 'service -l app=nginx-ingress --namespace kube-system'
     outputFormat: 'name'
