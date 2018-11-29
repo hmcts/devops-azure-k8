@@ -2,11 +2,11 @@ name: HMCTSDemo K8 Infrastructure Deployment Pipeline
 trigger: none
 variables:
   environment: 'hmctsdemo'
-  aksResourceGroup: 'k8-${environment}'
-  aksClusterName: 'k8-cluster-${environment}'
-  keyvaultName: 'k8-vault-${environment}'
-  serviceConnection: 'azurerm-${environment}'
-  aksParametersFile: '${environment}.json'
+  aksResourceGroup: 'k8-hmctsdemo'
+  aksClusterName: 'k8-cluster-hmctsdemo'
+  keyvaultName: 'k8-vault-hmctsdemo'
+  serviceConnection: 'azurerm-hmctsdemo'
+  aksParametersFile: 'hmctsdemo.json'
 
 jobs:
 - job: KeyVault
@@ -26,8 +26,8 @@ jobs:
     aksServicePrincipalId: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalId']]
     aksServicePrincipalSecret: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalSecret']]
   steps:
-  - template: ../tasks/keyvault-read.yaml 
-  - template: ../tasks/keyvault-read.yaml
+  - template: ../steps/keyvault-read.yaml 
+  - template: ../steps/keyvault-read.yaml
     parameters:
       serviceConnection: $(serviceConnection)
       aksResourceGroup: $(aksResourceGroup)
