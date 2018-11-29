@@ -1,4 +1,4 @@
-name: HMCTSDemo K8 Infrastructure Deployment Pipeline
+name: HMCTSDemo(PipelineDev) K8 Infrastructure Deployment Pipeline
 trigger: none
 variables:
   environment: 'hmctsdemo'
