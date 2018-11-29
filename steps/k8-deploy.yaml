@@ -35,10 +35,10 @@ steps:
     arguments: '-f https://raw.githubusercontent.com/Azure/helm-charts/master/docs/prerequisities/helm-rbac-config.yaml'
     outputFormat: 'name'
 
-- task: Delay@1
+- task: CmdLine@2
   displayName: 'Wait for Pod restart'
   inputs:
-    delayForMinutes: '1' 
+    script: 'sleep 60' 
 
 - task: HelmDeploy@0
   displayName: 'Install Tiller'
