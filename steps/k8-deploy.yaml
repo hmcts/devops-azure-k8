@@ -5,7 +5,7 @@ parameters:
   aksParametersFile: ''
 
 steps:
-- template: ../tasks/k8-arm-deploy.yaml
+- template: ../steps/k8-arm-deploy.yaml
   parameters:
     serviceConnection: ${{ parameters.serviceConnection }}
     aksResourceGroup: ${{ parameters.aksResourceGroup }}
