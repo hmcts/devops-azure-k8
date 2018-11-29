@@ -7,6 +7,7 @@ variables:
   keyvaultName: 'infra-vault-hmctsdemo'
   serviceConnection: 'azurerm-hmctsdemo'
   aksParametersFile: 'hmctsdemo.json'
+  ingressDNSName: 'ingress.hmctsdemo.platform.hmcts.net'
 
 jobs:
 - job: ReadKeyVault
