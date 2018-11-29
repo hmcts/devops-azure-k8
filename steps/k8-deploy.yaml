@@ -3,6 +3,7 @@ parameters:
   aksResourceGroup: ''
   aksClusterName: ''
   aksParametersFile: ''
+  ingressDNSName: ''
 
 steps:
 - template: ../steps/k8-arm-deploy.yaml
@@ -67,3 +68,4 @@ steps:
     serviceConnection: $(serviceConnection)
     aksResourceGroup: $(aksResourceGroup)
     aksClusterName: $(aksClusterName)
+    ingressDNSName: ${ingressDNSName}
