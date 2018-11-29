@@ -63,3 +63,7 @@ steps:
     arguments: '--service-account tiller --tiller-image gcr.io/kubernetes-helm/tiller:v2.11.0'
 
 - template: ../steps/nginx-ingress-install.yaml
+  parameters:
+    serviceConnection: $(serviceConnection)
+    aksResourceGroup: $(aksResourceGroup)
+    aksClusterName: $(aksClusterName)
