@@ -23,8 +23,8 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   variables:
-    aksServicePrincipalId: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalId']]
-    aksServicePrincipalSecret: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalSecret']]
+    aksServicePrincipalId: $[dependencies.ReadKeyVault.outputs['exportKeyVault.aksServicePrincipalId']]
+    aksServicePrincipalSecret: $[dependencies.ReadKeyVault.outputs['exportKeyVault.aksServicePrincipalSecret']]
   steps:
   - template: ../steps/helm-install.yaml
   - template: ../steps/k8-deploy.yaml
