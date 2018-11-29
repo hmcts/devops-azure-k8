@@ -1,23 +1,55 @@
+#
+# Build for the Sandbox CI AKS Cluster
+#
+name: HMCTSDEMO AKS Pipeline
+trigger: none
 variables:
   environment: 'hmctsdemo'
-  aksResourceGroup: 'k8-$(environment)'
-  subnetResourceGroup: 'core-infra-$(environment)'
-  subnetName: 'aks-subnet'
-  vnetName: 'core-infra-vnet-$(environment)'
-  location: 'uksouth'
-  clusterName: 'k8-cluster-$(environment)'
-  nodeCount: '10'
-  nodeDiskSize: '100'
-  vmSize: 'Standard_D4s_v3'
-  kubernetesVersion: '1.11.4'
-  keyvaultName: 'k8-vault-$(environment)'
-  kubectlConnectionType: 'Azure Resource Manager'
+  aksResourceGroup: 'k8-hmctsdemo'
+  aksClusterName: 'k8-cluster-hmctsdemo'
+  keyvaultName: 'infra-vault-hmctsdemo'
+  serviceConnection: 'azurerm-hmctsdemo'
+  aksParametersFile: 'hmctsdemo.json'
 
 jobs:
-- template: ../jobs/vault-read.yml
-  parameters:
-    serviceConnection: azurerm-$(environment)
-    
-- template: ../jobs/k8-deploy.yml
-  parameters:
-    serviceConnection: azurerm-$(environment)
+- job: Keyvault
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - template: ../steps/keyvault-ci.yaml
+    parameters:
+      serviceConnection: $(serviceConnection)
+      keyvaultName: $(keyvaultName)
+
+- job: DeployAKS
+  dependsOn: Keyvault
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  variables:
+    aksServicePrincipalId: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalId']]
+    aksServicePrincipalSecret: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalSecret']]
+  steps:
+  - template: ../tasks/helm-installer.yaml
+  - template: ../steps/deploy-aks.yaml
+    parameters:
+      serviceConnection: $(serviceConnection)
+      aksResourceGroup: $(aksResourceGroup)
+      aksClusterName: $(aksClusterName)
+      aksParametersFile: $(aksParametersFile)
+
+- job: InstallKured
+  dependsOn: DeployAKS
+  condition: succeeded()
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - template: ../steps/configure-helm.yaml
+    parameters:
+      serviceConnection: $(serviceConnection)
+      aksResourceGroup: $(aksResourceGroup)
+      aksClusterName: $(aksClusterName)
+  - template: ../tasks/kured.yaml
+    parameters:
+      serviceConnection: $(serviceConnection)
+      aksResourceGroup: $(aksResourceGroup)
+      aksClusterName: $(aksClusterName)
