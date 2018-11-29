@@ -45,7 +45,7 @@ jobs:
       serviceConnection: $(serviceConnection)
       aksResourceGroup: $(aksResourceGroup)
       aksClusterName: $(aksClusterName)
-  - template: ../tasks/kured-install.yaml
+  - template: ../steps/kured-install.yaml
     parameters:
       serviceConnection: $(serviceConnection)
       aksResourceGroup: $(aksResourceGroup)
