@@ -9,10 +9,10 @@
         "value": "1.11.4"
       },
       "vmSize": {
-        "value": "Standard_D4s_v3"
+        "value": "Standard_D2s_v3"
       },
       "nodeCount": {
-        "value": 10
+        "value": 3
       },
       "aksVnetResourceGroup": {
         "value": "core-infra-hmctsdemo"
