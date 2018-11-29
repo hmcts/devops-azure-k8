@@ -25,4 +25,4 @@ steps:
     kubernetesCluster: ${{ parameters.aksClusterName }}
     command: 'get'
     arguments: 'service -l app=nginx-ingress --namespace kube-system'
-    outputFormat: 'name'
+    outputFormat: 'json'
