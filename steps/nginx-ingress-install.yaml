@@ -12,10 +12,10 @@ steps:
     azureSubscription: ${{ parameters.serviceConnection }}
     azureResourceGroup: ${{ parameters.aksResourceGroup }}
     kubernetesCluster: ${{ parameters.aksClusterName }}
-    command: 'install'
+    command: 'upgrade'
     chartType: 'Name'
     chartName: 'stable/nginx-ingress'
-    arguments: '--namespace kube-system --set controller.replicaCount=2'
+    arguments: '--install --namespace kube-system --set controller.replicaCount=2'
 
 - task: Kubernetes@1
   displayName: 'Get Public IP of Nginx Ingress Controller'
