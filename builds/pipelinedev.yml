@@ -1,0 +1,54 @@
+name: HMCTSDemo K8 Infrastructure Deployment Pipeline
+trigger: none
+variables:
+  environment: 'hmctsdemo'
+  aksResourceGroup: 'k8-pipelinedev-hmctsdemo'
+  aksClusterName: 'k8-cluster-pipelinedev-hmctsdemo'
+  keyvaultName: 'infra-vault-hmctsdemo'
+  serviceConnection: 'azurerm-hmctsdemo'
+  aksParametersFile: 'hmctsdemo.json'
+  ingressDNSName: 'pipelinedev.hmctsdemo.platform.hmcts.net'
+
+jobs:
+- job: ReadKeyVault
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - template: ../steps/keyvault-read.yaml
+    parameters:
+      serviceConnection: $(serviceConnection)
+      keyvaultName: $(keyvaultName)
+
+- job: DeployK8
+  dependsOn: ReadKeyVault
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  variables:
+    aksServicePrincipalId: $[dependencies.ReadKeyVault.outputs['exportKeyVault.aksServicePrincipalId']]
+    aksServicePrincipalSecret: $[dependencies.ReadKeyVault.outputs['exportKeyVault.aksServicePrincipalSecret']]
+  steps:
+  - template: ../steps/helm-install.yaml
+  - template: ../steps/k8-deploy.yaml
+    parameters:
+      serviceConnection: $(serviceConnection)
+      aksResourceGroup: $(aksResourceGroup)
+      aksClusterName: $(aksClusterName)
+      aksParametersFile: $(aksParametersFile)
+      ingressDNSName: $(ingressDNSName)
+
+- job: InstallKured
+  dependsOn: DeployK8
+  condition: succeeded()
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - template: ../steps/helm-configure.yaml
+    parameters:
+      serviceConnection: $(serviceConnection)
+      aksResourceGroup: $(aksResourceGroup)
+      aksClusterName: $(aksClusterName)
+  - template: ../steps/kured-install.yaml
+    parameters:
+      serviceConnection: $(serviceConnection)
+      aksResourceGroup: $(aksResourceGroup)
+      aksClusterName: $(aksClusterName)
