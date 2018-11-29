@@ -4,7 +4,7 @@ variables:
   environment: 'hmctsdemo'
   aksResourceGroup: 'k8-hmctsdemo'
   aksClusterName: 'k8-cluster-hmctsdemo'
-  keyvaultName: 'k8-vault-hmctsdemo'
+  keyvaultName: 'infra-vault-hmctsdemo'
   serviceConnection: 'azurerm-hmctsdemo'
   aksParametersFile: 'hmctsdemo.json'
 
