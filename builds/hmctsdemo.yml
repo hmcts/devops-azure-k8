@@ -1,7 +1,4 @@
-#
-# Build for the Sandbox CI AKS Cluster
-#
-name: HMCTSDEMO AKS Pipeline
+name: HMCTSDemo K8 Infrastructure Deployment Pipeline
 trigger: none
 variables:
   environment: 'hmctsdemo'
@@ -12,7 +9,7 @@ variables:
   aksParametersFile: '${environment}.json'
 
 jobs:
-- job: Keyvault
+- job: KeyVault
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
@@ -21,24 +18,24 @@ jobs:
       serviceConnection: $(serviceConnection)
       keyvaultName: $(keyvaultName)
 
-- job: DeployAKS
-  dependsOn: Keyvault
+- job: DeployK8
+  dependsOn: KeyVault
   pool:
     vmImage: 'Ubuntu 16.04'
   variables:
     aksServicePrincipalId: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalId']]
     aksServicePrincipalSecret: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalSecret']]
   steps:
-- template: ../tasks/k8-deploy.yaml
-- template: ../tasks/helm-install.yaml
-  parameters:
-    serviceConnection: $(serviceConnection)
-    aksResourceGroup: $(aksResourceGroup)
-    aksClusterName: $(aksClusterName)
-    aksParametersFile: $(aksParametersFile)
+  - template: ../tasks/k8-deploy.yaml
+  - template: ../tasks/helm-install.yaml
+    parameters:
+      serviceConnection: $(serviceConnection)
+      aksResourceGroup: $(aksResourceGroup)
+      aksClusterName: $(aksClusterName)
+      aksParametersFile: $(aksParametersFile)
 
 - job: InstallKured
-  dependsOn: DeployAKS
+  dependsOn: DeployK8
   condition: succeeded()
   pool:
     vmImage: 'Ubuntu 16.04'
