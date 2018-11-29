@@ -1,1 +1,17 @@
+parameters:
+  serviceConnection: ''
+  aksResourceGroup: ''
+  aksClusterName: ''
 
+steps:
+- task: HelmDeploy@0
+  displayName: 'Install Nginx Ingress Controller'
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscription: ${{ parameters.serviceConnection }}
+    azureResourceGroup: ${{ parameters.aksResourceGroup }}
+    kubernetesCluster: ${{ parameters.aksClusterName }}
+    command: 'install'
+    chartType: 'Name'
+    chartName: 'stable/nginx-ingress'
+    arguments: '--namespace kube-system --set controller.replicaCount=2'
