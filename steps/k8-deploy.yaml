@@ -36,7 +36,7 @@ steps:
     outputFormat: 'name'
 
 - task: CmdLine@2
-  displayName: 'Wait for Pod restart'
+  displayName: 'Wait for Pods to Restart'
   inputs:
     script: 'sleep 60' 
 
