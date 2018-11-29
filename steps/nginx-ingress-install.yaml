@@ -35,4 +35,4 @@ steps:
 - task: ShellScript@2
   displayName: 'Update DNS Record with IP of Nginx Ingress Controller'
   inputs:
-    scriptPath: '../scripts/ingress-dns-update.sh'
+    scriptPath: scripts/ingress-dns-update.sh
