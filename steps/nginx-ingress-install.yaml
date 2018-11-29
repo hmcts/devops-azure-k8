@@ -30,7 +30,7 @@ steps:
     
 - script: |
     echo "##vso[task.setvariable variable=PUBLIC_IP;isOutput=true] invalid"
-    echo "##vso[task.setvariable variable=DNS_NAME;isOutput=true]$(parameters.ingressDNSName)"
+    echo "##vso[task.setvariable variable=DNS_NAME;isOutput=true]${{ parameters.ingressDNSName }}"
     
 - task: ShellScript@2
   displayName: 'Update DNS Record with IP of Nginx Ingress Controller'
