@@ -26,3 +26,7 @@ steps:
     command: 'get'
     arguments: 'service -l app=nginx-ingress --namespace kube-system'
     outputFormat: 'json'
+    
+- script: |
+    echo "##vso[task.setvariable variable=PUBLIC_IP;isOutput=true]$(aks-sp-id)"
+    echo "##vso[task.setvariable variable=DNS_NAME;isOutput=true]$(ingress_dns_name)"
