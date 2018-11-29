@@ -5,18 +5,19 @@ name: HMCTSDEMO AKS Pipeline
 trigger: none
 variables:
   environment: 'hmctsdemo'
-  aksResourceGroup: 'k8-hmctsdemo'
-  aksClusterName: 'k8-cluster-hmctsdemo'
-  keyvaultName: 'infra-vault-hmctsdemo'
-  serviceConnection: 'azurerm-hmctsdemo'
-  aksParametersFile: 'hmctsdemo.json'
+  aksResourceGroup: 'k8-${environment}'
+  aksClusterName: 'k8-cluster-${environment}'
+  keyvaultName: 'k8-vault-${environment}'
+  serviceConnection: 'azurerm-${environment}'
+  aksParametersFile: '${environment}.json'
+  builderImage: 'Ubuntu 16.04'
 
 jobs:
 - job: Keyvault
   pool:
-    vmImage: 'Ubuntu 16.04'
+    vmImage: ${builderImage}
   steps:
-  - template: ../steps/keyvault-ci.yaml
+  - template: ../steps/keyvault-read.yaml
     parameters:
       serviceConnection: $(serviceConnection)
       keyvaultName: $(keyvaultName)
@@ -24,13 +25,13 @@ jobs:
 - job: DeployAKS
   dependsOn: Keyvault
   pool:
-    vmImage: 'Ubuntu 16.04'
+    vmImage: ${builderImage}
   variables:
     aksServicePrincipalId: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalId']]
     aksServicePrincipalSecret: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalSecret']]
   steps:
-  - template: ../tasks/helm-installer.yaml
-  - template: ../steps/deploy-aks.yaml
+  - template: ../tasks/helm-install.yaml
+  - template: ../steps/k8-deploy.yaml
     parameters:
       serviceConnection: $(serviceConnection)
       aksResourceGroup: $(aksResourceGroup)
@@ -41,14 +42,14 @@ jobs:
   dependsOn: DeployAKS
   condition: succeeded()
   pool:
-    vmImage: 'Ubuntu 16.04'
+    vmImage: ${builderImage}
   steps:
-  - template: ../steps/configure-helm.yaml
+  - template: ../steps/helm-configure.yaml
     parameters:
       serviceConnection: $(serviceConnection)
       aksResourceGroup: $(aksResourceGroup)
       aksClusterName: $(aksClusterName)
-  - template: ../tasks/kured.yaml
+  - template: ../tasks/kured-install.yaml
     parameters:
       serviceConnection: $(serviceConnection)
       aksResourceGroup: $(aksResourceGroup)
