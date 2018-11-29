@@ -2,6 +2,7 @@ parameters:
   serviceConnection: ''
   aksResourceGroup: ''
   aksClusterName: ''
+  ingressDNSName: ''
 
 steps:
 - task: HelmDeploy@0
@@ -28,5 +29,10 @@ steps:
     outputFormat: 'json'
     
 - script: |
-    echo "##vso[task.setvariable variable=PUBLIC_IP;isOutput=true]$(aks-sp-id)"
-    echo "##vso[task.setvariable variable=DNS_NAME;isOutput=true]$(ingress_dns_name)"
+    echo "##vso[task.setvariable variable=PUBLIC_IP;isOutput=true] invalid"
+    echo "##vso[task.setvariable variable=DNS_NAME;isOutput=true]$(parameters.ingressDNSName)"
+    
+- task: ShellScript@2
+  displayName: 'Update DNS Record with IP of Nginx Ingress Controller'
+  inputs:
+    scriptPath: '../scripts/ingress-dns-update.sh'
