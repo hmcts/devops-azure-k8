@@ -10,12 +10,11 @@ variables:
   keyvaultName: 'k8-vault-${environment}'
   serviceConnection: 'azurerm-${environment}'
   aksParametersFile: '${environment}.json'
-  builderImage: 'Ubuntu 16.04'
 
 jobs:
 - job: Keyvault
   pool:
-    vmImage: ${builderImage}
+    vmImage: 'Ubuntu 16.04'
   steps:
   - template: ../steps/keyvault-read.yaml
     parameters:
@@ -25,7 +24,7 @@ jobs:
 - job: DeployAKS
   dependsOn: Keyvault
   pool:
-    vmImage: ${builderImage}
+    vmImage: 'Ubuntu 16.04'
   variables:
     aksServicePrincipalId: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalId']]
     aksServicePrincipalSecret: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalSecret']]
@@ -42,7 +41,7 @@ jobs:
   dependsOn: DeployAKS
   condition: succeeded()
   pool:
-    vmImage: ${builderImage}
+    vmImage: 'Ubuntu 16.04'
   steps:
   - template: ../steps/helm-configure.yaml
     parameters:
