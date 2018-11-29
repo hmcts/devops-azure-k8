@@ -19,7 +19,7 @@ jobs:
       keyvaultName: $(keyvaultName)
 
 - job: DeployK8
-  dependsOn: KeyVault
+  dependsOn: ReadKeyVault
   pool:
     vmImage: 'Ubuntu 16.04'
   variables:
