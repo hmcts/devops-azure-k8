@@ -1,0 +1,65 @@
+parameters:
+  serviceConnection: ''
+  aksResourceGroup: ''
+  aksClusterName: ''
+  ingressDNSName: ''
+
+steps:
+
+- task: HelmDeploy@0
+  displayName: 'Initialise Helm Client'
+  enabled: true
+  inputs:
+    connectionType: $(kubectlConnectionType)
+    azureSubscription: ${{ parameters.serviceConnection }}
+    azureResourceGroup: $(aksResourceGroup)
+    kubernetesCluster: $(clusterName)
+    command: 'init'
+    arguments: '--client-only'
+
+- task: HelmDeploy@0
+  displayName: 'Delete Traefik'
+  continueOnError: true
+  enabled: true
+  inputs:
+    connectionType: $(kubectlConnectionType)
+    azureSubscription: '${{ parameters.serviceConnection }}'
+    azureResourceGroup: $(aksResourceGroup)
+    kubernetesCluster: $(clusterName)
+    command: 'delete'
+    arguments: '--purge traefik'
+
+- task: HelmDeploy@0
+  displayName: 'Install Traefik'
+  enabled: true
+  inputs:
+    connectionType: $(kubectlConnectionType)
+    azureSubscription: ${{ parameters.serviceConnection }}
+    azureResourceGroup: $(aksResourceGroup)
+    kubernetesCluster: $(clusterName)
+    command: 'install'
+    chartType: 'Name'
+    chartName: 'stable/traefik'
+    namespace: 'kube-system'
+    releaseName: 'traefik'
+    valueFile: 'helm/$(environment)/traefik.yml'
+
+- task: Kubernetes@1
+  displayName: 'Get Public IP of Traefik Ingress Controller'
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: ${{ parameters.serviceConnection }}
+    azureResourceGroup: ${{ parameters.aksResourceGroup }}
+    kubernetesCluster: ${{ parameters.aksClusterName }}
+    command: 'get'
+    arguments: 'service -l app=nginx-ingress --namespace kube-system'
+    outputFormat: 'json'
+    
+- script: |
+    echo "##vso[task.setvariable variable=PUBLIC_IP;isOutput=true] invalid"
+    echo "##vso[task.setvariable variable=DNS_NAME;isOutput=true]${{ parameters.ingressDNSName }}"
+    
+- task: ShellScript@2
+  displayName: 'Update DNS Record with IP of Traefik Ingress Controller'
+  inputs:
+    scriptPath: scripts/ingress-dns-update.sh
