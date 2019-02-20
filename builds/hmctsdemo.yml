@@ -5,7 +5,7 @@ variables:
   aksResourceGroup: 'k8-hmctsdemo'
   aksClusterName: 'k8-cluster-hmctsdemo'
   keyvaultName: 'infra-vault-hmctsdemo'
-  serviceConnection: 'azurerm-hmctsdemo'
+  serviceConnection: 'HMCTS-Demo'
   aksParametersFile: 'hmctsdemo.json'
   ingressDNSName: 'ingress.hmctsdemo.platform.hmcts.net'
 
