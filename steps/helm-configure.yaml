@@ -13,5 +13,6 @@ steps:
     azureSubscriptionEndpoint: ${{ parameters.serviceConnection }}
     azureResourceGroup: ${{ parameters.aksResourceGroup }}
     kubernetesCluster: ${{ parameters.aksClusterName }}
+    kubernetesServiceEndpoint: ''
     command: 'init'
     arguments: '--client-only'
