@@ -10,7 +10,7 @@ steps:
   displayName: 'Initialise Helm Client'
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscription: ${{ parameters.serviceConnection }}
+    azureSubscriptionEndpoint: ${{ parameters.serviceConnection }}
     azureResourceGroup: ${{ parameters.aksResourceGroup }}
     kubernetesCluster: ${{ parameters.aksClusterName }}
     command: 'init'
