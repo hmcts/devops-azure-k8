@@ -50,7 +50,7 @@ steps:
     azureResourceGroup: ${{ parameters.aksResourceGroup }}
     kubernetesCluster: ${{ parameters.aksClusterName }}
     command: 'init'
-    arguments: '--service-account tiller --tiller-image gcr.io/kubernetes-helm/tiller:v2.12.1'
+    arguments: '--service-account tiller --tiller-image gcr.io/kubernetes-helm/tiller:v2.13.0'
 
 - task: HelmDeploy@0
   displayName: 'Install Tiller'
@@ -61,7 +61,7 @@ steps:
     azureResourceGroup: ${{ parameters.aksResourceGroup }}
     kubernetesCluster: ${{ parameters.aksClusterName }}
     command: 'init'
-    arguments: '--service-account tiller --tiller-image gcr.io/kubernetes-helm/tiller:v2.12.1'
+    arguments: '--service-account tiller --tiller-image gcr.io/kubernetes-helm/tiller:v2.13.0'
 
 - template: ../steps/traefik-ingress-install.yaml
   parameters:
