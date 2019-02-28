@@ -4,7 +4,11 @@ parameters:
   aksClusterName: ''
 
 steps:
-- template: ../steps/helm-install.yaml
+- task: HelmInstaller@0
+  displayName: 'Install Helm 2.11.0'
+  inputs:
+    helmVersion: "2.13.0"
+    installKubectl: false
 
 - task: HelmDeploy@0
   displayName: 'Initialise Helm Client'
