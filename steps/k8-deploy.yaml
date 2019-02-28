@@ -65,7 +65,7 @@ steps:
 
 - template: ../steps/traefik-ingress-install.yaml
   parameters:
-    serviceConnection: $(serviceConnection)
-    aksResourceGroup: $(aksResourceGroup)
-    aksClusterName: $(aksClusterName)
+    serviceConnection: ${{ parameters.serviceConnection }}
+    aksResourceGroup: ${{ parameters.aksResourceGroup }}
+    aksClusterName: ${{ parameters.aksClusterName }}
     ingressDNSName: ${ingressDNSName}
