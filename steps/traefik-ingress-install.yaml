@@ -48,7 +48,7 @@ steps:
   displayName: 'Get Public IP of Traefik Ingress Controller'
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscription: ${{ parameters.serviceConnection }}
+    azureSubscriptionEndpoint: ${{ parameters.serviceConnection }}
     azureResourceGroup: ${{ parameters.aksResourceGroup }}
     kubernetesCluster: ${{ parameters.aksClusterName }}
     command: 'get'
