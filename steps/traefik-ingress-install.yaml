@@ -42,7 +42,7 @@ steps:
     chartName: 'stable/traefik'
     namespace: 'kube-system'
     releaseName: 'traefik'
-    valueFile: 'helm/$(environment)/traefik.yml'
+    valueFile: 'helm/traefik.yml'
 
 - task: Kubernetes@1
   displayName: 'Get Public IP of Traefik Ingress Controller'
